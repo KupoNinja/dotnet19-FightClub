@@ -12,8 +12,8 @@ First Rule: Don't talk about it.
 
   - It's up to you on how to implement this logic (eg., maybe you can only move on to other NearbyEnemies after the `CurrentEnemy` is defeated).
 
-- Remember to `null` check all of your local variables when working with `List.Find(`&lt;predicate&gt;`)`.
+- Remember to `null` check all of your local variables when working with `List.Find(<predicate>)`.
 
-- Remember to utilize `Dictionary.ContainsKey(`&lt;string&gt;`)` before attempting to access a KeyValuePair within the dictionary.
+- Utilize `Dictionary.ContainsKey(<string>)` before attempting to access a KeyValuePair within the dictionary.
 
-- Remember to utilize `String.Split(`&lt;char&gt;`)` and `string command` and `string option` to simplify your `switch` statement logic within `DisplayMenu()`.
+- Utilize `String.Split(<char>)` and `string command` and `string option` to simplify your `switch` statement logic within `DisplayMenu()`. 
