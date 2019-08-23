@@ -45,6 +45,7 @@ namespace FightClub.Models
             Name = name;
             HealthPoints = hp;
             NearbyEnemies = new Dictionary<string, IEnemy>();
+            Loot = new List<IItem>();
         }
     }
 }
