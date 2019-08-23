@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using FightClub.Interfaces;
 
@@ -13,6 +14,13 @@ namespace FightClub.Models
         public List<IItem> Loot { get; set; }
         public Dictionary<string, IEnemy> NearbyEnemies { get; set; }
 
+        public void DisplayNearbyEnemies()
+        {
+            foreach (var kvp in NearbyEnemies)
+            {
+                Console.WriteLine(kvp.Key);
+            }
+        }
         public void ListLoot()
         {
 
