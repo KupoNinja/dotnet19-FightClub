@@ -6,7 +6,10 @@ namespace FightClub
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.Clear();
+            Fighter fighter = new Fighter();
+            fighter.Setup();
+            fighter.Run();
         }
     }
 }

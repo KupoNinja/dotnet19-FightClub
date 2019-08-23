@@ -14,6 +14,15 @@ namespace FightClub.Models
         public List<IItem> Loot { get; set; }
         public Dictionary<string, IEnemy> NearbyEnemies { get; set; }
 
+        public void AddNearbyEnemies(Enemy enemyToAdd, bool autoAdd = true)
+        {
+            NearbyEnemies.Add(enemyToAdd.Name, enemyToAdd);
+            if (autoAdd)
+            {
+                enemyToAdd.AddNearbyEnemies(this, false);
+            }
+        }
+
         public void DisplayNearbyEnemies()
         {
             foreach (var kvp in NearbyEnemies)
@@ -35,6 +44,7 @@ namespace FightClub.Models
         {
             Name = name;
             HealthPoints = hp;
+            NearbyEnemies = new Dictionary<string, IEnemy>();
         }
     }
 }
