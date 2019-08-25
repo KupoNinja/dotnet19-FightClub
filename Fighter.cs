@@ -20,11 +20,11 @@ namespace FightClub
         public void Setup()
         {
             // NOTE Maybe add an item that stuns the enemy giving you another turn?
-            Item brick = new Item("brick", "A brick is building material used to make walls, pavements and other elements in masonry construction.", 15);
-            Item bottle = new Item("bottle", "A bottle designed as a container for beer.", 10);
-            Item rock = new Item("rock", "An American actor, producer, and former professional wrestler.", 60);
-            Item apple = new Item("apple", "A sweet, edible fruit produced by an apple tree", 10);
-            Item milk = new Item("milk", "A nutrient-rich, white liquid food produced by the mammary glands of mammals.", 50);
+            Item brick = new Item("brick", "A brick is building material used to make walls, pavements and other elements in masonry construction.", 15, true);
+            Item bottle = new Item("bottle", "A bottle designed as a container for beer.", 10, true);
+            Item rock = new Item("rock", "An American actor, producer, and former professional wrestler.", 60, true);
+            Item apple = new Item("apple", "A sweet, edible fruit produced by an apple tree", 10, false);
+            Item milk = new Item("milk", "A nutrient-rich, white liquid food produced by the mammary glands of mammals.", 50, false);
 
             // NOTE Maybe set up Tyler to be OP at the start if they try to run and make the player actually fight him. Can be true ending boss.
             Enemy greeter = new Enemy("The Greeter", 40);
@@ -52,8 +52,8 @@ namespace FightClub
             //TODO must provide options for fighting CurrentEnemy, looting (if enemy is dead), 
             //     moving to a new enemy (CurrentEnemy.NearbyEnemies), using items from your inventory, 
             //     and retreating/quitting the applicaton
-            DisplayTitle();
-            StartingScenario();
+            // DisplayTitle();
+            // StartingScenario();
 
             // TODO Finish this
             string menuOptions = "You can (a)ttack, (l)ook at your items, or (r)un like a coward.";
@@ -72,12 +72,14 @@ namespace FightClub
                     break;
                 default:
                     Console.WriteLine("Try again.");
+                    // Console.WriteLine("");
                     break;
             }
         }
 
         public void DisplayTitle()
         {
+            Console.Clear();
             string title = @"
  __     __     ______     __         ______     ______     __    __     ______                
 /\ \  _ \ \   /\  ___\   /\ \       /\  ___\   /\  __ \   /\ \-./  \   /\  ___\               

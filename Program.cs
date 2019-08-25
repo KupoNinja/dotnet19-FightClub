@@ -9,6 +9,8 @@ namespace FightClub
             Console.Clear();
             Fighter fighter = new Fighter();
             fighter.Setup();
+            fighter.DisplayTitle();
+            fighter.StartingScenario();
             fighter.Run();
         }
     }
