@@ -54,13 +54,10 @@ namespace FightClub.Models
 
         public IItem LootTheLoot()
         {
-            Console.WriteLine("(T)ake the items or go (b)ack.");
-            Console.WriteLine("");
-            switch (Console.ReadLine().ToLower())
-            {
-                case "t":
-
-            }
+            // NOTE Take enemy items and add to inventory (How to get it into Fighter inventory from here...)
+            // NOTE Remove items from enemy Loot
+            // NOTE Display what the Fighter took
+            // this.
             return null;
         }
 

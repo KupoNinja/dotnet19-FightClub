@@ -60,22 +60,40 @@ namespace FightClub
             // TODO Finish this
             string menuOptions = "You can (a)ttack, (l)ook at your items, or (r)un like a coward.";
 
-            Console.WriteLine(menuOptions);
-            switch (Console.ReadLine().ToLower())
+            if (CurrentEnemy.IsDead)
             {
-                case "a":
-                    Fight();
-                    break;
-                case "l":
-                    ListInventory();
-                    break;
-                case "r":
-                    Coward();
-                    break;
-                default:
-                    Console.WriteLine("Try again.");
-                    // Console.WriteLine("");
-                    break;
+                Console.WriteLine("You handled yourself well!");
+                Console.WriteLine("What would you like to do?");
+                Console.WriteLine("================================================");
+                Console.WriteLine("");
+                Console.WriteLine("(L)oot the enemy, show nearby (e)nemies, or (r)un like a coward?");
+                switch (Console.ReadLine().ToLower())
+                {
+                    // TODO Finish this
+                    case "l":
+                        CurrentEnemy.LootTheLoot();
+                        break;
+                }
+            }
+            else
+            {
+                Console.WriteLine(menuOptions);
+                switch (Console.ReadLine().ToLower())
+                {
+                    case "a":
+                        Fight();
+                        break;
+                    case "l":
+                        ListInventory();
+                        break;
+                    case "r":
+                        Coward();
+                        break;
+                    default:
+                        Console.WriteLine("Try again.");
+                        // Console.WriteLine("");
+                        break;
+                }
             }
         }
 
@@ -172,30 +190,45 @@ namespace FightClub
 
         public void Fight()
         {
-            Console.WriteLine(CurrentEnemy.Name + ": " + CurrentEnemy.HealthPoints);
-            Console.WriteLine("");
-            Console.WriteLine("------------------------------------------------");
-            Console.WriteLine(Name + ": " + HealthPoints);
-            Console.WriteLine("");
-
             while (CurrentEnemy.HealthPoints > 0)
             {
+                Console.Clear();
+                if (HealthPoints <= 0)
+                {
+                    Typewrite("First you have to give up, first you have to know not fear — Know that someday you’re gonna die.");
+                    Thread.Sleep(1000);
+                    Typewrite("Today is that day.");
+                    AttendingFightClub = false;
+                }
+                Console.WriteLine(CurrentEnemy.Name + "- HP: " + CurrentEnemy.HealthPoints);
+                Console.WriteLine("");
+                Console.WriteLine("------------------------------------------------");
+                Console.WriteLine(Name + "- HP: " + HealthPoints);
+                Console.WriteLine("");
+                Console.WriteLine("================================================");
+                Console.WriteLine("");
                 Console.WriteLine("You can (p)unch, roundhouse (k)ick, or (u)se an item.");
                 switch (Console.ReadLine().ToLower())
                 {
                     case "p":
                         Console.WriteLine("You punch " + CurrentEnemy.Name + " in the face.");
+                        Console.WriteLine("");
+                        Thread.Sleep(1000);
                         CurrentEnemy.HealthPoints -= 5;
                         break;
                     case "k":
                         Console.WriteLine("You summon your inner Chuck Norris and land a stunning roundhouse on " + CurrentEnemy.Name + "'s chest.");
+                        Console.WriteLine("");
+                        Thread.Sleep(1000);
                         CurrentEnemy.HealthPoints -= 7;
                         break;
                     case "u":
                         ListInventory();
                         break;
                     default:
+
                         Console.WriteLine("You ain't gonna survive long with your fat fingers. Try again.");
+                        Thread.Sleep(2000);
                         break;
                 }
             }
