@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using FightClub.Interfaces;
 using FightClub.Models;
 
@@ -49,10 +50,11 @@ namespace FightClub
         public void DisplayMenu()
         {
             //TODO must provide options for fighting CurrentEnemy, looting (if enemy is dead), 
-            //     moving to a new enemy (CurrentEnemy.NearbyEnemies), using items from your inventory, and retreating/quitting the applicaton
+            //     moving to a new enemy (CurrentEnemy.NearbyEnemies), using items from your inventory, 
+            //     and retreating/quitting the applicaton
+            DisplayTitle();
             StartingScenario();
 
-            // string startingMenuOptions = "Type (look) to see your opponents or (run) like a coward.";
             // TODO Finish this
             string menuOptions = "You can (a)ttack, (l)ook at your items, or (r)un like a coward.";
 
@@ -66,16 +68,7 @@ namespace FightClub
                     ListInventory();
                     break;
                 case "r":
-                    Console.Clear();
-                    Console.WriteLine($"You attempt to run and a man that looks like Edward Norton stands in your way.");
-                    Console.WriteLine("");
-                    Console.WriteLine("\"I don't think we've met yet, " + Name + ", my name's Tyler.\"");
-                    Console.WriteLine("");
-                    Console.WriteLine("The last thing you see is Tyler's toothy grin as he shoves a bag over your head.");
-                    Console.WriteLine("================================================");
-                    Console.WriteLine("");
-                    Console.WriteLine("BETTER LUCK NEXT TIME!");
-                    AttendingFightClub = false;
+                    Coward();
                     break;
                 default:
                     Console.WriteLine("Try again.");
@@ -83,18 +76,89 @@ namespace FightClub
             }
         }
 
+        public void DisplayTitle()
+        {
+            string title = @"
+ __     __     ______     __         ______     ______     __    __     ______                
+/\ \  _ \ \   /\  ___\   /\ \       /\  ___\   /\  __ \   /\ \-./  \   /\  ___\               
+\ \ \/ \.\ \  \ \  __\   \ \ \____  \ \ \____  \ \ \/\ \  \ \ \-./\ \  \ \  __\               
+ \ \__/ .~\_\  \ \_____\  \ \_____\  \ \_____\  \ \_____\  \ \_\ \ \_\  \ \_____\             
+  \/_/   \/_/   \/_____/   \/_____/   \/_____/   \/_____/   \/_/  \/_/   \/_____/             
+                                                                                              
+ ______   ______                                                                              
+/\__  _\ /\  __ \                                                                             
+\/_/\ \/ \ \ \/\ \                                                                            
+   \ \_\  \ \_____\                                                                           
+    \/_/   \/_____/                                                                           
+                                                                                              
+ ______   __     ______     __  __     ______      ______     __         __  __     ______    
+/\  ___\ /\ \   /\  ___\   /\ \_\ \   /\__  _\    /\  ___\   /\ \       /\ \/\ \   /\  == \   
+\ \  __\ \ \ \  \ \ \__ \  \ \  __ \  \/_/\ \/    \ \ \____  \ \ \____  \ \ \_\ \  \ \  __<   
+ \ \_\    \ \_\  \ \_____\  \ \_\ \_\    \ \_\     \ \_____\  \ \_____\  \ \_____\  \ \_____\ 
+  \/_/     \/_/   \/_____/   \/_/\/_/     \/_/      \/_____/   \/_____/   \/_____/   \/_____/ 
+                                                                                              
+";
+            Console.WriteLine(title);
+            Console.WriteLine("=============================================================================================");
+
+            Console.WriteLine("");
+            Console.WriteLine("Press any key to start or Ctrl+C to exit.");
+            Console.ReadKey();
+            Console.WriteLine("");
+        }
+
         public void StartingScenario()
         {
-            Console.WriteLine("Welcome to Fight Club.\nWhat's your name?");
+            Console.WriteLine("");
+            Console.WriteLine("A man greets you at the door.");
+            Console.WriteLine("");
+            Typewrite("\"Welcome to Fight Club.\"\n\"What's your name?\"");
+            Console.WriteLine("");
+            Console.WriteLine("------------------------------------------------");
             Name = Console.ReadLine();
-            // NOTE Maybe delay as if it types out the text below.
-            Console.WriteLine("I hope you know what you're doing...");
+
+            Console.Clear();
+            Typewrite($"\"I hope you know what you're doing, {Name}...\"");
+            Console.WriteLine("");
             Console.WriteLine("================================================");
             Console.WriteLine("");
-            // Console.WriteLine(startingMenuOptions);
-            // NOTE Can you delay this?
-            // Console.Clear();
-            Console.WriteLine("The man talking to you takes a swift swing at you. You jump back to dodge and put your fists up.");
+            Console.WriteLine("Type (look) to see your opponents or (run) like a coward.");
+            Thread.Sleep(2500);
+
+            Console.Clear();
+            Typewrite("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Console.WriteLine("");
+            Console.Clear();
+            Console.WriteLine("================================================");
+            Console.WriteLine("The man talking to you takes a swift swing at you.");
+            Console.WriteLine("You jump back to dodge and put your fists up.");
+            Console.WriteLine("================================================");
+        }
+
+        public void Coward()
+        {
+            Console.Clear();
+            Console.WriteLine($"You attempt to run and a man that looks like Edward Norton stands in your way.");
+            Thread.Sleep(2000);
+            Console.WriteLine("");
+            Typewrite("\"I don't think we've met yet, " + Name + ", my name's Tyler.\"");
+            Thread.Sleep(1000);
+            Console.WriteLine("");
+            Console.WriteLine("The last thing you see is Tyler's toothy grin as he shoves a bag over your head.");
+            Console.WriteLine("================================================");
+            Console.WriteLine("");
+            Console.WriteLine("BETTER LUCK NEXT TIME!");
+            AttendingFightClub = false;
+        }
+
+        private static void Typewrite(string message)
+        {
+            for (int i = 0; i < message.Length; i++)
+            {
+                Console.Write(message[i]);
+                Thread.Sleep(50);
+            }
+            Console.WriteLine("");
         }
 
         public void EngageNewEnemy()

@@ -8,7 +8,6 @@ namespace FightClub.Models
     {
         public string Name { get; set; }
         public int HealthPoints { get; set; }
-
         public bool IsDead { get { return HealthPoints > 0; } set { return; } }
 
         public List<IItem> Loot { get; set; }
