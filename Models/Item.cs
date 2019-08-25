@@ -9,7 +9,7 @@ namespace FightClub.Models
         public int HPModifier { get; set; }
         public bool IsWeapon { get; set; }
 
-        public Item(string name, string description, int hpmodifier, bool isWeapon)
+        public Item(string name, string description, int hpmodifier, bool isWeapon = true)
         {
             Name = name;
             Description = description;

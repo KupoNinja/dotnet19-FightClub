@@ -21,9 +21,9 @@ namespace FightClub
         public void Setup()
         {
             // NOTE Maybe add an item that stuns the enemy giving you another turn?
-            Item brick = new Item("Brick", "A brick is building material used to make walls, pavements and other elements in masonry construction.", 15, true);
-            Item bottle = new Item("Bottle", "A bottle designed as a container for beer.", 10, true);
-            Item rock = new Item("Rock", "An American actor, producer, and former professional wrestler.", 60, true);
+            Item brick = new Item("Brick", "A brick is building material used to make walls, pavements and other elements in masonry construction.", 15);
+            Item bottle = new Item("Bottle", "A bottle designed as a container for beer.", 10);
+            Item rock = new Item("Rock", "An American actor, producer, and former professional wrestler.", 60);
             Item apple = new Item("Apple", "A sweet, edible fruit produced by an apple tree", 10, false);
             Item milk = new Item("Milk", "A nutrient-rich, white liquid food produced by the mammary glands of mammals.", 15, false);
             Item sandwich = new Item("Sandwich", "A  food typically consisting of vegetables, sliced cheese or meat, placed on or between slices of bread.", 25, false);
@@ -48,7 +48,9 @@ namespace FightClub
             boss.Loot.Add(rock);
             boss.Loot.Add(milk);
 
+            // NOTE Take these out after testing.
             Inventory.Add(brick);
+            Inventory.Add(apple);
 
             CurrentEnemy = greeter;
         }
@@ -62,6 +64,7 @@ namespace FightClub
 
             if (CurrentEnemy.IsDead)
             {
+                Console.WriteLine("------------------------------------------------");
                 Console.WriteLine("You handled yourself well!");
                 Console.WriteLine("What would you like to do?");
                 Console.WriteLine("================================================");
@@ -72,6 +75,9 @@ namespace FightClub
                     // TODO Finish this
                     case "l":
                         CurrentEnemy.LootTheLoot();
+                        break;
+                    case "e":
+                        CurrentEnemy.
                         break;
                 }
             }
@@ -219,14 +225,13 @@ namespace FightClub
                     case "k":
                         Console.WriteLine("You summon your inner Chuck Norris and land a stunning roundhouse on " + CurrentEnemy.Name + "'s chest.");
                         Console.WriteLine("");
-                        Thread.Sleep(1000);
+                        Thread.Sleep(2000);
                         CurrentEnemy.HealthPoints -= 7;
                         break;
                     case "u":
                         ListInventory();
                         break;
                     default:
-
                         Console.WriteLine("You ain't gonna survive long with your fat fingers. Try again.");
                         Thread.Sleep(2000);
                         break;
@@ -242,6 +247,8 @@ namespace FightClub
             if (Inventory.Any())
             {
                 int itemCount = 1;
+                Console.WriteLine("");
+                Console.WriteLine("Items:");
                 foreach (var item in Inventory)
                 {
                     Console.WriteLine($"{itemCount}. {item.Name} - {item.Description}");
@@ -250,6 +257,7 @@ namespace FightClub
             }
             else
             {
+                Console.WriteLine("");
                 Console.WriteLine("You don't have any items.");
                 Console.WriteLine("");
                 return;
