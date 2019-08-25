@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using FightClub.Interfaces;
 using FightClub.Models;
@@ -20,11 +21,12 @@ namespace FightClub
         public void Setup()
         {
             // NOTE Maybe add an item that stuns the enemy giving you another turn?
-            Item brick = new Item("brick", "A brick is building material used to make walls, pavements and other elements in masonry construction.", 15, true);
-            Item bottle = new Item("bottle", "A bottle designed as a container for beer.", 10, true);
-            Item rock = new Item("rock", "An American actor, producer, and former professional wrestler.", 60, true);
-            Item apple = new Item("apple", "A sweet, edible fruit produced by an apple tree", 10, false);
-            Item milk = new Item("milk", "A nutrient-rich, white liquid food produced by the mammary glands of mammals.", 50, false);
+            Item brick = new Item("Brick", "A brick is building material used to make walls, pavements and other elements in masonry construction.", 15, true);
+            Item bottle = new Item("Bottle", "A bottle designed as a container for beer.", 10, true);
+            Item rock = new Item("Rock", "An American actor, producer, and former professional wrestler.", 60, true);
+            Item apple = new Item("Apple", "A sweet, edible fruit produced by an apple tree", 10, false);
+            Item milk = new Item("Milk", "A nutrient-rich, white liquid food produced by the mammary glands of mammals.", 15, false);
+            Item sandwich = new Item("Sandwich", "A  food typically consisting of vegetables, sliced cheese or meat, placed on or between slices of bread.", 25, false);
 
             // NOTE Maybe set up Tyler to be OP at the start if they try to run and make the player actually fight him. Can be true ending boss.
             Enemy greeter = new Enemy("The Greeter", 40);
@@ -37,13 +39,16 @@ namespace FightClub
             tiny.AddNearbyEnemies(boss);
             tiny.AddNearbyEnemies(glasses);
             boss.AddNearbyEnemies(glasses);
-            // boss.AddNearbyEnemies(boss);
+            // boss.AddNearbyEnemies(tyler);
 
             greeter.Loot.Add(bottle);
             tiny.Loot.Add(brick);
             tiny.Loot.Add(apple);
+            glasses.Loot.Add(sandwich);
             boss.Loot.Add(rock);
             boss.Loot.Add(milk);
+
+            Inventory.Add(brick);
 
             CurrentEnemy = greeter;
         }
@@ -52,9 +57,6 @@ namespace FightClub
             //TODO must provide options for fighting CurrentEnemy, looting (if enemy is dead), 
             //     moving to a new enemy (CurrentEnemy.NearbyEnemies), using items from your inventory, 
             //     and retreating/quitting the applicaton
-            // DisplayTitle();
-            // StartingScenario();
-
             // TODO Finish this
             string menuOptions = "You can (a)ttack, (l)ook at your items, or (r)un like a coward.";
 
@@ -111,7 +113,7 @@ namespace FightClub
 
         public void StartingScenario()
         {
-            Console.WriteLine("");
+            Console.Clear();
             Console.WriteLine("A man greets you at the door.");
             Console.WriteLine("");
             Typewrite("\"Welcome to Fight Club.\"\n\"What's your name?\"");
@@ -137,7 +139,7 @@ namespace FightClub
             Console.WriteLine("================================================");
         }
 
-        public void Coward()
+        private void Coward()
         {
             Console.Clear();
             Console.WriteLine($"You attempt to run and a man that looks like Edward Norton stands in your way.");
@@ -170,18 +172,56 @@ namespace FightClub
 
         public void Fight()
         {
+            Console.WriteLine(CurrentEnemy.Name + ": " + CurrentEnemy.HealthPoints);
+            Console.WriteLine("");
+            Console.WriteLine("------------------------------------------------");
+            Console.WriteLine(Name + ": " + HealthPoints);
+            Console.WriteLine("");
+
+            while (CurrentEnemy.HealthPoints > 0)
+            {
+                Console.WriteLine("You can (p)unch, roundhouse (k)ick, or (u)se an item.");
+                switch (Console.ReadLine().ToLower())
+                {
+                    case "p":
+                        Console.WriteLine("You punch " + CurrentEnemy.Name + " in the face.");
+                        CurrentEnemy.HealthPoints -= 5;
+                        break;
+                    case "k":
+                        Console.WriteLine("You summon your inner Chuck Norris and land a stunning roundhouse on " + CurrentEnemy.Name + "'s chest.");
+                        CurrentEnemy.HealthPoints -= 7;
+                        break;
+                    case "u":
+                        ListInventory();
+                        break;
+                    default:
+                        Console.WriteLine("You ain't gonna survive long with your fat fingers. Try again.");
+                        break;
+                }
+            }
+
             // NOTE After enemy loses can loot
             // NOTE Set another menu here to view nearbyenemies?
         }
 
         public void ListInventory()
         {
-            int itemCount = 0;
-            foreach (var item in Inventory)
+            if (Inventory.Any())
             {
-                Console.WriteLine(itemCount + ". " + item);
-                itemCount++;
+                int itemCount = 1;
+                foreach (var item in Inventory)
+                {
+                    Console.WriteLine($"{itemCount}. {item.Name} - {item.Description}");
+                    itemCount++;
+                }
             }
+            else
+            {
+                Console.WriteLine("You don't have any items.");
+                Console.WriteLine("");
+                return;
+            }
+
             Console.WriteLine("================================================");
             Console.WriteLine("You can (use 'item') or go (back) to using your fists like a man.");
 
@@ -218,7 +258,8 @@ namespace FightClub
 
         public void UseItem(string itemName)
         {
-            if (HealthPoints < 50)
+            // if (Inventory.)
+            // if (HealthPoints < 50 && )
             {
                 // NOTE Could use a bool IsWeapon for Items to determine if it heals or damages.
             }
@@ -228,6 +269,7 @@ namespace FightClub
         {
             AttendingFightClub = true;
             HealthPoints = 50;
+            Inventory = new List<IItem>();
         }
     }
 }
