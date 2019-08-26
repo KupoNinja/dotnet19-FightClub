@@ -64,20 +64,24 @@ namespace FightClub
 
             if (CurrentEnemy.IsDead)
             {
+                // NOTE Dialogue still shows after user chooses an option.
                 Console.WriteLine("------------------------------------------------");
                 Console.WriteLine("You handled yourself well!");
                 Console.WriteLine("What would you like to do?");
                 Console.WriteLine("================================================");
                 Console.WriteLine("");
-                Console.WriteLine("(L)oot the enemy, show nearby (e)nemies, or (r)un like a coward?");
+                Console.WriteLine("(L)oot the enemy, (s)how nearby enemies, or (r)un like a coward?");
                 switch (Console.ReadLine().ToLower())
                 {
                     // TODO Finish this
                     case "l":
                         CurrentEnemy.LootTheLoot();
                         break;
-                    case "e":
-                        CurrentEnemy.
+                    case "s":
+                        CurrentEnemy.DisplayNearbyEnemies();
+                        break;
+                    case "r":
+                        Coward();
                         break;
                 }
             }
@@ -166,13 +170,13 @@ namespace FightClub
         private void Coward()
         {
             Console.Clear();
-            Console.WriteLine($"You attempt to run and a man that looks like Edward Norton stands in your way.");
+            Console.WriteLine($"You attempt to run and a beat up man that looks like Edward Norton stands in your way.");
             Thread.Sleep(2000);
             Console.WriteLine("");
             Typewrite("\"I don't think we've met yet, " + Name + ", my name's Tyler.\"");
             Thread.Sleep(1000);
             Console.WriteLine("");
-            Console.WriteLine("The last thing you see is Tyler's toothy grin as he shoves a bag over your head.");
+            Console.WriteLine("The last thing you see is Tyler's bloody grin as he shoves a bag over your head.");
             Console.WriteLine("================================================");
             Console.WriteLine("");
             Console.WriteLine("BETTER LUCK NEXT TIME!");
