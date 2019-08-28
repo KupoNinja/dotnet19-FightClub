@@ -31,36 +31,71 @@ namespace FightClub.Models
             {
                 Console.WriteLine(kvp.Key);
             }
+
         }
 
         // NOTE Unsure if this method is needed 
         public void ListLoot()
         {
-            // NOTE Do I need to account for if the enemy is alive? Shouldn't be an option if enemy is still alive depending on current menu.
+            Console.Clear();
+            Console.WriteLine($"These are the items they were carrying.");
             int itemCount = 1;
             foreach (var item in Loot)
             {
                 Console.WriteLine($"{itemCount}. {item.Name} - {item.Description}");
                 itemCount++;
             }
+            // LootTheLoot();
         }
 
         public IItem LootTheLoot()
         {
-            if (IsDead == true && Loot.Any())
-            {
-                ListLoot();
-            }
-            else
+            IItem item = null;
+            if (!Loot.Any())
             {
                 Console.WriteLine("Enemy doesn't have any items.");
                 Console.WriteLine("");
             }
+            else
+            {
+                ListLoot();
+                Console.WriteLine("You can (take 'item') or go (back).");
+                string userInput = Console.ReadLine().ToLower();
+                string[] words = userInput.Split(' ');
+                string command = words[0];
+                string option = "";
+
+                if (words.Length > 1)
+                {
+                    option = words[1];
+                }
+                switch (command)
+                {
+                    case "take":
+                        IItem targetItem = Loot.Find(l => l.Name.ToLower() == option);
+                        Console.Clear();
+                        if (targetItem is null)
+                        {
+                            Console.WriteLine("They don't have whatever it is you're wanting, buddy.");
+                        }
+                        else
+                        {
+                            Loot.Remove(targetItem);
+                            item = targetItem;
+                        }
+                        break;
+                    case "back":
+                        // Console.Clear();
+                        return null;
+                    default:
+                        Console.WriteLine("What's wrong with you?! Hurry up! Everyone's waiting!");
+                        break;
+                }
+            }
             // NOTE Take enemy items and add to inventory (How to get it into Fighter inventory from here...)
             // NOTE Remove items from enemy Loot
             // NOTE Display what the Fighter took
-            // this.
-            return null;
+            return item;
         }
 
         public Enemy(string name, int hp)

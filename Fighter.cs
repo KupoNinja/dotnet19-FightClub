@@ -65,6 +65,11 @@ namespace FightClub
             if (CurrentEnemy.IsDead)
             {
                 // NOTE Dialogue still shows after user chooses an option.
+                // NOTE Have user type out word when done.
+                Console.WriteLine("\nPress enter to continue.");
+                Console.ReadLine();
+                Console.Clear();
+                Console.WriteLine($"{CurrentEnemy.Name} hits the ground hard.");
                 Console.WriteLine("------------------------------------------------");
                 Console.WriteLine("You handled yourself well!");
                 Console.WriteLine("What would you like to do?");
@@ -75,7 +80,20 @@ namespace FightClub
                 {
                     // TODO Finish this
                     case "l":
-                        CurrentEnemy.LootTheLoot();
+                        if (!CurrentEnemy.Loot.Any())
+                        {
+                            Console.WriteLine("The enemy has no loot.");
+                        }
+                        else
+                        {
+                            IItem takenLoot = CurrentEnemy.LootTheLoot();
+                            if (takenLoot is IItem)
+                            {
+                                Inventory.Add(takenLoot);
+                                Console.WriteLine("You took " + takenLoot.Name + ".");
+                            }
+                            // Do I need to handle if takeLoot is not an IItem? back returns null
+                        }
                         break;
                     case "s":
                         CurrentEnemy.DisplayNearbyEnemies();
@@ -105,6 +123,17 @@ namespace FightClub
                         break;
                 }
             }
+        }
+
+        public void DisplayHP()
+        {
+            Console.WriteLine(CurrentEnemy.Name + "- HP: " + CurrentEnemy.HealthPoints);
+            Console.WriteLine("");
+            Console.WriteLine("------------------------------------------------");
+            Console.WriteLine(Name + "- HP: " + HealthPoints);
+            Console.WriteLine("");
+            Console.WriteLine("================================================");
+            Console.WriteLine("");
         }
 
         public void DisplayTitle()
@@ -198,10 +227,13 @@ namespace FightClub
 
         }
 
+        // TODO Do I create enemy actions in here (if you attack, enemy attacks) or create enemy actions in Enemy
         public void Fight()
         {
             while (CurrentEnemy.HealthPoints > 0)
             {
+                Console.WriteLine("\nPress enter to continue.");
+                Console.ReadLine();
                 Console.Clear();
                 if (HealthPoints <= 0)
                 {
@@ -210,26 +242,21 @@ namespace FightClub
                     Typewrite("Today is that day.");
                     AttendingFightClub = false;
                 }
-                Console.WriteLine(CurrentEnemy.Name + "- HP: " + CurrentEnemy.HealthPoints);
-                Console.WriteLine("");
-                Console.WriteLine("------------------------------------------------");
-                Console.WriteLine(Name + "- HP: " + HealthPoints);
-                Console.WriteLine("");
-                Console.WriteLine("================================================");
-                Console.WriteLine("");
+
+                DisplayHP();
                 Console.WriteLine("You can (p)unch, roundhouse (k)ick, or (u)se an item.");
                 switch (Console.ReadLine().ToLower())
                 {
                     case "p":
                         Console.WriteLine("You punch " + CurrentEnemy.Name + " in the face.");
                         Console.WriteLine("");
-                        Thread.Sleep(1000);
+                        // Thread.Sleep(1000);
                         CurrentEnemy.HealthPoints -= 5;
                         break;
                     case "k":
                         Console.WriteLine("You summon your inner Chuck Norris and land a stunning roundhouse on " + CurrentEnemy.Name + "'s chest.");
                         Console.WriteLine("");
-                        Thread.Sleep(2000);
+                        // Thread.Sleep(2000);
                         CurrentEnemy.HealthPoints -= 7;
                         break;
                     case "u":
@@ -237,7 +264,7 @@ namespace FightClub
                         break;
                     default:
                         Console.WriteLine("You ain't gonna survive long with your fat fingers. Try again.");
-                        Thread.Sleep(2000);
+                        // Thread.Sleep(2000);
                         break;
                 }
             }
@@ -248,6 +275,7 @@ namespace FightClub
 
         public void ListInventory()
         {
+            Console.Clear();
             if (Inventory.Any())
             {
                 int itemCount = 1;
@@ -282,7 +310,9 @@ namespace FightClub
             switch (command)
             {
                 case "back":
-                    DisplayMenu();
+                    Console.Clear();
+                    DisplayHP();
+                    Fight();
                     break;
                 case "use":
                     UseItem(option);
@@ -303,10 +333,38 @@ namespace FightClub
 
         public void UseItem(string itemName)
         {
-            // if (Inventory.)
-            // if (HealthPoints < 50 && )
+            IItem targetItem = Inventory.Find(i => i.Name.ToLower() == itemName);
+            // NOTE Just practicing casting
+            // Item myItem = (Item)targetItem;
+
+            if (targetItem is null)
             {
-                // NOTE Could use a bool IsWeapon for Items to determine if it heals or damages.
+                Console.Clear();
+                DisplayHP();
+                Console.WriteLine("");
+                Console.WriteLine("You get hit too hard? That isn't in your inventory.\nTry again!");
+                Console.WriteLine("");
+            }
+            else
+            {
+                if (targetItem.IsWeapon)
+                {
+                    CurrentEnemy.HealthPoints -= targetItem.HPModifier;
+                    Inventory.Remove(targetItem);
+                    Console.Clear();
+                    DisplayHP();
+                    Console.WriteLine($"{CurrentEnemy.Name} lost -{targetItem.HPModifier} from {targetItem.Name}.");
+                    Console.WriteLine("");
+                }
+                if (!targetItem.IsWeapon)
+                {
+                    HealthPoints += targetItem.HPModifier;
+                    Inventory.Remove(targetItem);
+                    Console.Clear();
+                    DisplayHP();
+                    Console.WriteLine($"You gained +{targetItem.HPModifier} from {targetItem.Name}.");
+                    Console.WriteLine("");
+                }
             }
         }
 
